@@ -21,8 +21,8 @@ Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 
 Route::get('/dashboard/posts', ["uses"=>"Admin\AdminPostsController@index", "as"=> "adminDisplayPosts"]);
 Route::get('/dashboard/tags', ["uses"=>"DashboardController@showAllTags", "as"=> "adminDisplayTags"]);
-Route::get('/dashboard/images', ["uses"=>"DashboardController@showAllImages", "as"=> "adminDisplayImages"]);
 
+/***** Dashboard Posts *******/
 /*GET Requests for posts*/
 //create post Form
 Route::get('/dashboard/post/create', ["uses"=>"Admin\AdminPostsController@create", "as"=> "AdminCreatePost"]);
@@ -41,7 +41,18 @@ Route::post('/dashboard/post/update/{id}', ["uses"=>"Admin\AdminPostsController@
 
 Route::post('/ajax/tags', ["uses"=>"Admin\AdminTagsController@getAjaxTags", "as"=> "GetAjaxTags"]);
 
+/***** Dashboard Images *******/
+Route::get('/dashboard/images', ["uses"=>"Admin\AdminImagesController@index", "as"=> "adminDisplayImages"]);
+/*GET Request for Image */
+//show create form 
+Route::get('/dashboard/image/create', ["uses"=>"Admin\AdminImagesController@create", "as"=> "AdminCreateImage"]);
+//show edit form by id
+Route::get('/dashboard/image/edit/{id}', ["uses"=>"Admin\AdminImagesController@edit", "as"=> "AdminEditImage"]);
+//delete post by id
+Route::get('/dashboard/image/delete/{id}', ["uses"=>"Admin\AdminImagesController@delete", "as"=> "AdminDeleteImage"]);
 
-
-//https://appdividend.com/2018/05/31/laravel-dropzone-image-upload-tutorial-with-example/
-//https://appdividend.com/2018/02/05/laravel-multiple-images-upload-tutorial/
+/*POST Requests for images*/
+//insert post from create form
+Route::post('/dashboard/image/insert', ["uses"=>"Admin\AdminImagesController@insert", "as"=> "AdminInsertImage"]);
+//update post by id
+Route::post('/dashboard/post/update/{id}', ["uses"=>"Admin\AdminImagesController@update", "as"=> "AdminUpdateImage"]);

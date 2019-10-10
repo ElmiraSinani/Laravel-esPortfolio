@@ -24,8 +24,7 @@ class AdminPostsController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         $posts = Post::paginate(10);
         return view('dashboard.allPosts',['posts'=>$posts]);
     }
@@ -53,8 +52,6 @@ class AdminPostsController extends Controller {
             $selectedTagIDs .= $tag->id.',';
         }
         $selectedTagIDs = rtrim($selectedTagIDs, ',');
-        
-               
         
         return view('dashboard.editPost')->with(['post'=>$post, 'selectedTagIds'=> $selectedTagIDs]);
     }
