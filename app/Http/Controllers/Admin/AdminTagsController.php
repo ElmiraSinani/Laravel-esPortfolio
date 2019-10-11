@@ -14,46 +14,18 @@ class AdminTagsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
-    }
-    
-    public function getAjaxTags(){
-        $tags = Tag::all();        
-        return response()->json($tags);
-    }
+    public function index() {
+        $tags = Tag::paginate(10);
+        return view('dashboard.allTags',['tags'=>$tags]);
+    }   
 
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+    public function create(){
+        return view('dashboard.createTag');
     }
 
     /**
@@ -62,9 +34,27 @@ class AdminTagsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
+    public function edit($id) {
+        $tag = Tag::find($id);
+        
+        return view('dashboard.editTag')->with(['tag'=>$tag]);
+;    }
+
+    /**
+    * Insert/Create the specified resource into storage.
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @return \Illuminate\Http\Response
+    */
+    public function insert(Request $request){   
+         // Form validation
+         $request->validate([
+            'title' =>  'required'
+        ]);
+        $tagID = $this->saveTag($request);
+        if($tagID){
+            return redirect()->route('AdminEditTag',['id' =>$tagID ])->with(['status' => 'Tag Created successfully.']);
+        }       
     }
 
     /**
@@ -74,9 +64,15 @@ class AdminTagsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(Request $request, $id) {
+        // Form validation
+        $request->validate([
+            'title' =>  'required'
+        ]);
+        $tagID = $this->saveTag($request, $id);
+        if($tagID){
+            return redirect()->route('AdminEditTag',['id' =>$tagID ])->with(['status' => 'Tag Updated successfully.']);
+        }
     }
 
     /**
@@ -85,8 +81,47 @@ class AdminTagsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+    public function delete($id) {
+        //find tag by id
+        $tag = Tag::find($id);         
+        //delete record from database
+        Tag::destroy($id); 
+        //redirect to dashboard all tags list
+        return redirect()->route('adminDisplayTags')->with(['status' => 'Tag Deleted.']);
+    }
+    
+    /**
+     * Store resource in storage.
+     *
+     * @param $request object
+     * @return $tag ID or False
+     */
+    public function saveTag($request, $id=NULL) { 
+        if($id){
+            $tag = Tag::find($id);
+        }else{
+            $tag = new Tag; 
+        }       
+        
+        if($request->slug){
+            $tag->slug = str_slug($request->slug);
+        } else {
+            $tag->slug = str_slug($request->title);
+        } 
+        $tag->title = $request->title;               
+        $tag->order = $request->order;
+        
+        if($tag->save()){
+            return $tag->id;
+        }        
+        return false;
+    }
+    
+    /**
+    * getAjaxTags 
+    */    
+    public function getAjaxTags(){
+        $tags = Tag::all();        
+        return response()->json($tags);
     }
 }

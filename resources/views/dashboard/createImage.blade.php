@@ -28,8 +28,8 @@
                     <div class="form-group row">
                         <label for="alt" class="col-md-3 col-form-label text-md-right">{{ __('Alt') }}</label>
                         <div class="col-md-8">
-                            <input id="alt" type="text" class="form-control @error('alt') is-invalid @enderror" name="alt" value="" required />
-                            @error('title')
+                            <input id="alt" type="text" class="form-control @error('alt') is-invalid @enderror" name="alt" value="" />
+                            @error('alt')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -39,8 +39,8 @@
                     <div class="form-group row">
                         <label for="caption" class="col-md-3 col-form-label text-md-right">{{ __('Caption') }}</label>
                         <div class="col-md-8">
-                            <input id="caption" type="text" class="form-control @error('caption') is-invalid @enderror" name="caption" value="" required />
-                            @error('title')
+                            <input id="caption" type="text" class="form-control @error('caption') is-invalid @enderror" name="caption" value="" />
+                            @error('caption')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>

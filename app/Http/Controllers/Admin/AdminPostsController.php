@@ -125,8 +125,6 @@ class AdminPostsController extends Controller {
 
             return redirect()->route('AdminEditPost',['id' =>$post->id ])->with(['status' => 'Post Created successfully.']);
         } 
-        
-        
     }
     
     /**
@@ -156,10 +154,6 @@ class AdminPostsController extends Controller {
         $post->livePreviewLink = $request->input('livePreviewLink');
         $post->showLivePreviewLink = (isset($showLiveLink)&&$showLiveLink!=NULL) ? $showLiveLink : "0";
         $post->order = $request->input('order') ? $request->input('order') : "0";
-        
-        
-        
-        
         
         if($post->save()) {
             //Save Tags
